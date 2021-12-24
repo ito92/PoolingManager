@@ -1,0 +1,24 @@
+{
+  "name": "com.dabois.poolingmanager",
+  "version": "1.0.0",
+  "displayName": "Pooling Manager",
+  "unity": "2020.1",
+  "description": "Handy pooling manager",
+  "keywords": [
+    "Utilities",
+    "Pooling"
+  ],
+  "author": {
+    "name": "Miguel Torres",
+    "email": "mix0204@gmail.com",
+    "url": ""
+  },
+  "type": "library",
+  "samples": [
+    {
+      "displayName": "Example Usage",
+      "description": "Simple Scene and Script using the utility",
+      "path": "Samples~"
+    }
+  ]
+}
