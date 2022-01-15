@@ -1,6 +1,6 @@
 {
   "name": "com.dabois.poolingmanager",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "displayName": "Pooling Manager",
   "unity": "2020.1",
   "description": "Handy pooling manager",

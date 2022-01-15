@@ -33,7 +33,12 @@ namespace DaBois.Pooling
 
         public PoolGroup<T> CreatePool<T>(T prefab, bool autoActivate, int limit) where T : Component
         {
-            PoolGroup<Component> group = new PoolGroup<Component>(prefab, autoActivate, limit);
+            if(_componentGroups.TryGetValue(prefab, out PoolGroup<Component> group))
+            {
+                return group as PoolGroup<T>;
+            }
+
+            group = new PoolGroup<Component>(prefab, autoActivate, limit);
             _componentGroups.Add(prefab, group);
             return group as PoolGroup<T>;
         }
