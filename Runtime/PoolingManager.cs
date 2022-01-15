@@ -16,7 +16,6 @@ namespace DaBois.Pooling
         }
 
         private Dictionary<Component, PoolGroup<Component>> _componentGroups = new Dictionary<Component, PoolGroup<Component>>();
-        private Dictionary<GameObject, PoolGroup<GameObject>> _gameObjectGroups = new Dictionary<GameObject, PoolGroup<GameObject>>();
 
         private void Awake()
         {
@@ -32,13 +31,14 @@ namespace DaBois.Pooling
             _instance = this;
         }
 
-        public PoolGroup<T> CreatePool<T>(T prefab) where T : Component
+        public PoolGroup<T> CreatePool<T>(T prefab, bool autoActivate, int limit) where T : Component
         {
-            PoolGroup<T> group = new PoolGroup<T>(prefab);
-            return group;
+            PoolGroup<Component> group = new PoolGroup<Component>(prefab, autoActivate, limit);
+            _componentGroups.Add(prefab, group);
+            return group as PoolGroup<T>;
         }
 
-        public T Spawn<T>(T prefab, bool activate = true) where T : Component
+        public T Spawn<T>(T prefab) where T : Component
         {
             PoolGroup<Component> group;
             if(!_componentGroups.TryGetValue(prefab, out group))
@@ -47,10 +47,6 @@ namespace DaBois.Pooling
                 _componentGroups.Add(prefab, group);
                 T pooledObj = group.Get() as T;
                 _componentGroups.Add(pooledObj, group);
-                if (activate)
-                {
-                    pooledObj.gameObject.SetActive(true);
-                }
                 return pooledObj;
             }
             else
@@ -60,24 +56,16 @@ namespace DaBois.Pooling
                 {
                     _componentGroups.Add(pooledObj, group);
                 }
-                if (activate)
-                {
-                    pooledObj.gameObject.SetActive(true);
-                }
                 return pooledObj;
             }
         }
 
-        public bool Return<T>(T obj, bool deactivate = true) where T : Component
+        public bool Return<T>(T obj) where T : Component
         {
             PoolGroup<Component> group;
             if (_componentGroups.TryGetValue(obj, out group))
             {
                 bool returned = group.Return(obj);
-                if(deactivate && returned)
-                {
-                    obj.gameObject.SetActive(false);
-                }
                 return returned;
             }
             else
